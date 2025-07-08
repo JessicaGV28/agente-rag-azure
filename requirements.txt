@@ -1,0 +1,9 @@
+langchain
+openai
+python-dotenv
+faiss-cpu
+wikipedia
+wikipedia-api
+langchain_community
+langchain-openai
+

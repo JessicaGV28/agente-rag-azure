@@ -1,0 +1,27 @@
+# .gitignore
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables file (never commit secrets)
+.env
+
+# Virtual environment folders
+venv/
+env/
+.venv/
+.env/
+
+# VSCode settings folder
+.vscode/
+
+# macOS system files
+.DS_Store
+
+# Logs
+*.log
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
