@@ -2,7 +2,7 @@
 
 Este proyecto implementa un agente conversacional avanzado que combina:
 
-- **Function Calling**: permite que el modelo haga llamadas a funciones externas.
+- **Function Calling**: permite que el modelo haga llamadas a funciones externas.  
 - **Retrieval-Augmented Generation (RAG)**: integra recuperación de información desde un contexto local y fuentes externas para generar respuestas precisas y actualizadas.
 
 El agente utiliza el servicio de Azure OpenAI junto con LangChain y la API de Wikipedia para enriquecer las respuestas cuando la información local pueda estar desactualizada.
@@ -11,10 +11,11 @@ El agente utiliza el servicio de Azure OpenAI junto con LangChain y la API de Wi
 
 ## Características principales
 
-- Uso de embeddings para indexar un documento de contexto (normativa LOPD) local.
-- Recuperación de información relevante del contexto para responder preguntas.
-- Llamadas a Wikipedia para obtener información externa actualizada cuando la pregunta lo requiere.
-- Flujo conversacional con memoria para mantener el contexto del diálogo.
+- Uso de embeddings para indexar un documento de contexto (normativa LOPD) local.  
+- Recuperación de información relevante del contexto para responder preguntas.  
+- Llamadas a Wikipedia para obtener información externa actualizada cuando la pregunta lo requiere.  
+- Flujo conversacional con memoria para mantener el contexto del diálogo.  
+- Interfaz web sencilla desarrollada con **Streamlit** para interactuar con el agente.  
 
 ---
 
@@ -24,6 +25,7 @@ El agente utiliza el servicio de Azure OpenAI junto con LangChain y la API de Wi
 ├── data/
 │   └── contexto.txt        # Documento de contexto local (normativa LOPD)
 ├── main.py                 # Código principal del agente conversacional
+├── app.py                  # Interfaz gráfica con Streamlit
 ├── requirements.txt        # Dependencias Python necesarias
 ├── .env.example            # Ejemplo de variables de entorno para Azure
 ├── .gitignore              # Ignorar archivos innecesarios en Git
@@ -62,9 +64,8 @@ AZURE_OPENAI_API_VERSION=2023-05-15
 
 Ejecuta en la terminal:
 
-```bash
 pip install -r requirements.txt
-```
+
 
 ---
 
@@ -72,9 +73,7 @@ pip install -r requirements.txt
 
 Para ejecutar el agente conversacional, ejecuta:
 
-```bash
 python3 main.py
-```
 
 Luego, podrás hacer preguntas en la consola. Para salir, escribe `salir` o `exit`.
 
@@ -82,6 +81,12 @@ El agente responderá utilizando:
 
 - Información del contexto local para preguntas relacionadas con la normativa LOPD.
 - Wikipedia para preguntas con términos que sugieran información reciente o no cubierta en el contexto.
+
+Para ejecutar con interfaz web Streamlit, ejecuta:
+
+streamlit run app.py
+
+Accede luego a http://localhost:8501 en tu navegador para interactuar con la aplicación gráfica.
 
 ---
 
@@ -99,6 +104,7 @@ El agente responderá utilizando:
 - El proyecto usa `langchain`, `langchain_community` y `langchain_openai` para integrarse con Azure OpenAI.
 - Wikipedia se consulta mediante `wikipediaapi` con un user-agent personalizado.
 - La memoria conversacional se mantiene para dar continuidad a la conversación.
+- La interfaz web con Streamlit permite una experiencia de usuario más amigable y persistente.
 
 ---
 
