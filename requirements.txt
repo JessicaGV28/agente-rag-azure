@@ -6,4 +6,5 @@ wikipedia
 wikipedia-api
 langchain_community
 langchain-openai
+streamlit
 

@@ -103,29 +103,31 @@ qa_chain = ConversationalRetrievalChain.from_llm(
     output_key="answer"
 )
 
-print("\nAgente conversacional con RAG + Function Calling (Wikipedia). Escribe 'salir' para terminar.\n")
 
-while True:
-    try:
-        pregunta = input("Tú: ")
-        if pregunta.lower() in ["salir", "exit"]:
+if __name__ == "__main__":
+    print("\nAgente conversacional con RAG + Function Calling (Wikipedia). Escribe 'salir' para terminar.\n")
+
+    while True:
+        try:
+            pregunta = input("Tú: ")
+            if pregunta.lower() in ["salir", "exit"]:
+                break
+
+            # 1. Intenta responder con RAG
+            respuesta_completa = qa_chain.invoke({"question": pregunta})
+            respuesta_rag = respuesta_completa["answer"]
+
+            # 2. Detecta si falta información reciente (condicional simple)
+            hoy = datetime.datetime.now().year
+            if any(palabra in pregunta.lower() for palabra in ["último", "reciente", str(hoy), str(hoy - 1)]):
+                print("\n[RAG] Puede que la información esté desactualizada. Usando búsqueda externa en Wikipedia...\n")
+                respuesta_web = buscar_en_web(pregunta)
+                print("Agente:", respuesta_web)
+            else:
+                print("Agente:", respuesta_rag)
+
+        except KeyboardInterrupt:
+            print("\nInterrupción por teclado. Saliendo...")
             break
-
-        # 1. Intenta responder con RAG
-        respuesta_completa = qa_chain.invoke({"question": pregunta})
-        respuesta_rag = respuesta_completa["answer"]
-
-        # 2. Detecta si falta información reciente (condicional simple)
-        hoy = datetime.datetime.now().year
-        if any(palabra in pregunta.lower() for palabra in ["último", "reciente", str(hoy), str(hoy - 1)]):
-            print("\n[RAG] Puede que la información esté desactualizada. Usando búsqueda externa en Wikipedia...\n")
-            respuesta_web = buscar_en_web(pregunta)
-            print("Agente:", respuesta_web)
-        else:
-            print("Agente:", respuesta_rag)
-
-    except KeyboardInterrupt:
-        print("\nInterrupción por teclado. Saliendo...")
-        break
-    except Exception as e:
-        print(f"[ERROR] Ocurrió un error inesperado: {e}\n")
+        except Exception as e:
+            print(f"[ERROR] Ocurrió un error inesperado: {e}\n")
