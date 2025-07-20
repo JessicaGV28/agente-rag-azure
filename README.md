@@ -121,6 +121,8 @@ Accede a [http://localhost:8501](http://localhost:8501) para usar la app.
 - La recuperación desde Wikipedia se realiza mediante la librería `wikipediaapi`.
 - La memoria del agente se mantiene durante cada sesión de ejecución.
 - La detección de cuándo usar Wikipedia está basada en palabras clave predefinidas como “último”, fechas recientes, etc.
+- El sistema incorpora un filtro de contenido sensible para bloquear preguntas que incluyan temas como sexo, violencia, terrorismo, drogas, insultos y racismo. Este filtro se implementa tanto en la interfaz de usuario como en la lógica del agente para asegurar una experiencia ética y segura.
+
 
 ---
 
@@ -128,7 +130,7 @@ Accede a [http://localhost:8501](http://localhost:8501) para usar la app.
 
 ### Pruebas de Usuario y Feedback
 
-Se realizaron pruebas simuladas con diversos tipos de preguntas para evaluar la funcionalidad y experiencia del agente conversacional:
+Se realizaron pruebas con diversos tipos de preguntas para evaluar la funcionalidad y experiencia del agente conversacional:
 
 | Caso de prueba                                | Pregunta de ejemplo                           | Resultado esperado                         | Resultado obtenido                       | Observaciones                                       |
 |----------------------------------------------|----------------------------------------------|-------------------------------------------|-----------------------------------------|----------------------------------------------------|
@@ -154,6 +156,8 @@ Se realizaron pruebas simuladas con diversos tipos de preguntas para evaluar la 
 - Transparencia en la documentación sobre datos y limitaciones.
 - Privacidad: no se almacena información sensible del usuario.
 - Reconocimiento de limitaciones: no sustituye asesoría profesional.
+- Se reconoce que los modelos de lenguaje como Azure OpenAI tienen limitaciones inherentes y pueden contener sesgos implícitos en sus datos de entrenamiento. Por ello, se han adoptado medidas como filtros de contenido y prompts cuidadosamente diseñados para minimizar posibles impactos negativos.
+
 
 ---
 
@@ -163,6 +167,9 @@ Se realizaron pruebas simuladas con diversos tipos de preguntas para evaluar la 
 - Implementar análisis y corrección de sesgos en respuestas.
 - Añadir moderación y auditoría automática de conversaciones.
 - Incluir opciones para reporte de respuestas inadecuadas.
+- Documentar formalmente la política de IA Responsable del proyecto.  
+- Integrar monitoreo y auditoría anónima para detectar comportamientos no deseados sin comprometer la privacidad del usuario.
+
 
 ---
 
