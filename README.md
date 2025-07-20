@@ -1,116 +1,135 @@
-# Agente Conversacional con Function Calling y Retrieval-Augmented Generation (RAG) usando Azure OpenAI
+# Agente Conversacional con Function Calling y RAG (Retrieval-Augmented Generation) usando Azure OpenAI
 
-Este proyecto implementa un agente conversacional avanzado que combina:
+Este proyecto implementa un sistema agéntico funcional que integra:
 
-- **Function Calling**: permite que el modelo haga llamadas a funciones externas.  
-- **Retrieval-Augmented Generation (RAG)**: integra recuperación de información desde un contexto local y fuentes externas para generar respuestas precisas y actualizadas.
+- **Function Calling** con Azure OpenAI: permite que el modelo invoque funciones externas según el tipo de pregunta.
+- **RAG (Retrieval-Augmented Generation)**: recuperación de contexto desde un documento local usando embeddings y LangChain.
+- **Fuente externa (Wikipedia)**: para preguntas sobre temas actuales o fuera del contexto local.
+- **Interfaz gráfica (Streamlit)**: facilita la interacción con el agente desde el navegador.
 
-El agente utiliza el servicio de Azure OpenAI junto con LangChain y la API de Wikipedia para enriquecer las respuestas cuando la información local pueda estar desactualizada.
+## Objetivo del proyecto
+
+Este proyecto es parte del curso de sistemas agénticos y demuestra cómo construir un agente conversacional inteligente usando técnicas avanzadas de LLM, incluyendo:
+
+- Llamadas a funciones personalizadas.
+- Indexado y búsqueda semántica de documentos con embeddings.
+- Recuperación y generación de respuestas enriquecidas con LangChain y Wikipedia.
+- Frontend funcional con Streamlit.
+- Despliegue y configuración usando Azure OpenAI.
 
 ---
 
-## Características principales
+## Diagrama de Arquitectura
 
-- Uso de embeddings para indexar un documento de contexto (normativa LOPD) local.  
-- Recuperación de información relevante del contexto para responder preguntas.  
-- Llamadas a Wikipedia para obtener información externa actualizada cuando la pregunta lo requiere.  
-- Flujo conversacional con memoria para mantener el contexto del diálogo.  
-- Interfaz web sencilla desarrollada con **Streamlit** para interactuar con el agente.  
+```mermaid
+flowchart TD
+    A[Usuario] -->|Pregunta| B[Interfaz Streamlit]
+    B --> C[Agente Conversacional]
+    C --> D[LangChain Retriever - Contexto LOPD]
+    C --> E[Función externa Wikipedia]
+    C --> F[Modelo Azure OpenAI - LLM]
+    D --> F
+    E --> F
+    F --> C
+    C --> G[Respuesta generada]
+    G --> B
+```
 
 ---
 
-## Estructura del proyecto
+## Requisitos del sistema
+
+- Python 3.9 o superior
+- Cuenta activa en Azure con acceso a Azure OpenAI
+- Acceso a internet
+- Clave API y endpoint configurados
+
+---
+
+## Archivos del proyecto
 
 ```
 ├── data/
-│   └── contexto.txt        # Documento de contexto local (normativa LOPD)
-├── main.py                 # Código principal del agente conversacional
-├── app.py                  # Interfaz gráfica con Streamlit
-├── requirements.txt        # Dependencias Python necesarias
-├── .env.example            # Ejemplo de variables de entorno para Azure
-├── .gitignore              # Ignorar archivos innecesarios en Git
-└── README.md               # Documentación del proyecto
+│   └── contexto.txt           # Documento fuente indexado para el RAG (normativa LOPD)
+├── main.py                    # Motor principal del agente (CLI)
+├── app.py                     # Interfaz Streamlit
+├── requirements.txt           # Dependencias Python
+├── .env.example               # Variables de entorno (config Azure)
+└── README.md                  # Este archivo
 ```
-
----
-
-## Requisitos previos
-
-- Cuenta activa en Azure con acceso al servicio Azure OpenAI.
-- Claves y configuraciones de despliegue (deployment name, endpoint, API key, versión API).
-- Python 3.9+ instalado.
-- Conexión a Internet.
 
 ---
 
 ## Configuración
 
-1. Copia el archivo `.env.example` y renómbralo a `.env`.
+1. Clona el repositorio y accede al directorio:
+```bash
+git clone https://github.com/JessicaGV28/agente-rag-azure.git
+cd agente-rag-azure
+```
 
-2. Rellena las variables con los datos de tu cuenta Azure:
+2. Copia el archivo `.env.example` a `.env` y completa tus credenciales de Azure:
 
 ```env
-AZURE_DEPLOYMENT_NAME=tu_nombre_de_deployment
+AZURE_DEPLOYMENT_NAME=nombre_deployment
 AZURE_OPENAI_API_KEY=tu_api_key
 AZURE_OPENAI_ENDPOINT=https://tu_endpoint.openai.azure.com/
 AZURE_OPENAI_API_VERSION=2023-05-15
 ```
 
-3. Asegúrate de que el archivo `data/contexto.txt` contiene el texto de referencia para el RAG.
+3. Asegúrate de tener el archivo `data/contexto.txt` con el contenido base del agente (normativa LOPD).
 
 ---
 
 ## Instalación de dependencias
 
-Ejecuta en la terminal:
-
+```bash
 pip install -r requirements.txt
-
+```
 
 ---
 
-## Uso
+## Cómo ejecutar
 
-Para ejecutar el agente conversacional, ejecuta:
+### Desde consola (modo texto)
 
-python3 main.py
+```bash
+python main.py
+```
 
-Luego, podrás hacer preguntas en la consola. Para salir, escribe `salir` o `exit`.
+### Desde navegador (modo gráfico)
 
-El agente responderá utilizando:
-
-- Información del contexto local para preguntas relacionadas con la normativa LOPD.
-- Wikipedia para preguntas con términos que sugieran información reciente o no cubierta en el contexto.
-
-Para ejecutar con interfaz web Streamlit, ejecuta:
-
+```bash
 streamlit run app.py
+```
 
-Accede luego a http://localhost:8501 en tu navegador para interactuar con la aplicación gráfica.
-
----
-
-## Flujo del agente
-
-1. El usuario hace una pregunta.
-2. El agente intenta responder usando el índice de contexto local (RAG).
-3. Si la pregunta parece requerir información actualizada (palabras clave como "último", años recientes), el agente busca en Wikipedia.
-4. Devuelve la respuesta combinada y mantiene la memoria conversacional.
+Accede a [http://localhost:8501](http://localhost:8501) para usar la app.
 
 ---
 
-## Notas
+## Funcionamiento del agente
 
-- El proyecto usa `langchain`, `langchain_community` y `langchain_openai` para integrarse con Azure OpenAI.
-- Wikipedia se consulta mediante `wikipediaapi` con un user-agent personalizado.
-- La memoria conversacional se mantiene para dar continuidad a la conversación.
-- La interfaz web con Streamlit permite una experiencia de usuario más amigable y persistente.
+1. Recibe una pregunta del usuario.
+2. Busca información relevante en el documento local usando embeddings y LangChain.
+3. Si detecta una necesidad de información actualizada o externa, consulta Wikipedia.
+4. Combina la información recuperada y responde manteniendo memoria conversacional.
+
+---
+
+## Notas adicionales
+
+- La recuperación desde Wikipedia se realiza mediante la librería `wikipediaapi`.
+- La memoria del agente se mantiene durante cada sesión de ejecución.
+- La detección de cuándo usar Wikipedia está basada en palabras clave predefinidas como “último”, fechas recientes, etc.
+
+---
+
+## Licencia
+
+MIT License
 
 ---
 
 ## Enlace al repositorio
 
 [https://github.com/JessicaGV28/agente-rag-azure]
-
----
-
