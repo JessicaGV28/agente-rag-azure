@@ -21,6 +21,9 @@ AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")
 if not all([AZURE_DEPLOYMENT_NAME, AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_API_VERSION]):
     raise ValueError("Faltan variables de entorno de Azure. Revisa tu .env")
 
+# Lista simple de palabras o temas sensibles para filtro ético
+palabras_prohibidas = ["sexo", "violencia", "terrorismo", "drogas", "insultos", "racismo"]
+
 # Función herramienta para búsqueda externa en Wikipedia
 @tool
 def buscar_en_wikipedia(query: str) -> str:
@@ -51,3 +54,11 @@ qa_chain: AgentExecutor = initialize_agent(
     verbose=True,
     memory=memory
 )
+
+# Función que actúa de wrapper para filtrar preguntas antes de enviarlas al agente
+def preguntar_al_agente(pregunta: str) -> str:
+    if any(p in pregunta.lower() for p in palabras_prohibidas):
+        return "Lo siento, no puedo procesar preguntas que contengan contenido inapropiado o sensible."
+    else:
+        resultado = qa_chain.invoke({"input": pregunta})
+        return resultado["output"]

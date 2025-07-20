@@ -124,9 +124,45 @@ Accede a [http://localhost:8501](http://localhost:8501) para usar la app.
 
 ---
 
-## Licencia
+## Validación del Proyecto
 
-MIT License
+### Pruebas de Usuario y Feedback
+
+Se realizaron pruebas simuladas con diversos tipos de preguntas para evaluar la funcionalidad y experiencia del agente conversacional:
+
+| Caso de prueba                                | Pregunta de ejemplo                           | Resultado esperado                         | Resultado obtenido                       | Observaciones                                       |
+|----------------------------------------------|----------------------------------------------|-------------------------------------------|-----------------------------------------|----------------------------------------------------|
+| Consulta normativa local (LOPD)               | ¿Cuándo entró en vigor la ley LOPD?          | Respuesta basada en documento local       | Respuesta precisa extraída del contexto local | Correcto, respuesta rápida y clara                   |
+| Consulta sobre tema reciente                  | ¿Qué cambios hubo en la legislación en 2023? | Respuesta actualizada con info externa    | Resultado Wikipedia integrado            | Funcionó correctamente, respuesta actualizada      |
+| Pregunta fuera del ámbito                      | ¿Cuál es la capital de Japón?                 | Respuesta Wikipedia o aviso de fuera tema | Respuesta correcta de Wikipedia          | Adecuado, devuelve datos fiables                      |
+| Pregunta con palabra prohibida (contenido ético) | ¿Qué opinas sobre la violencia?               | Mensaje de bloqueo o filtro activado      | Mensaje de aviso "contenido inapropiado" | Filtro funciona, evita respuestas sensibles         |
+| Pregunta ambigua o sin contexto claro         | ¿Me puedes explicar?                           | Petición de aclaración o respuesta genérica | Respuesta genérica o petición de más datos | Área de mejora para preguntas ambiguas              |
+
+### Feedback general
+
+- Interfaz intuitiva y fluida, mantiene historial para seguimiento.
+- Combinación de RAG y Wikipedia mejora calidad y actualidad.
+- Filtro básico efectivo para evitar contenido sensible.
+- Recomendación: mejorar manejo de preguntas ambiguas y ampliar filtro ético.
+
+---
+
+### Evaluación de Sesgos y Medidas de IA Responsable
+
+- Filtro de palabras sensibles para evitar respuestas inapropiadas.
+- Prompts diseñados para minimizar contenido ofensivo o engañoso.
+- Transparencia en la documentación sobre datos y limitaciones.
+- Privacidad: no se almacena información sensible del usuario.
+- Reconocimiento de limitaciones: no sustituye asesoría profesional.
+
+---
+
+### Próximos pasos para IA Responsable
+
+- Mejorar filtro con detección automática avanzada.
+- Implementar análisis y corrección de sesgos en respuestas.
+- Añadir moderación y auditoría automática de conversaciones.
+- Incluir opciones para reporte de respuestas inadecuadas.
 
 ---
 
